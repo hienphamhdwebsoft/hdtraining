@@ -29,7 +29,6 @@ export function Header() {
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-
                     <Typography variant="h6" className={classes.title}>
                         Student Management
                     </Typography>
