@@ -58,7 +58,7 @@ function* fecthRankingByCityList() {
   const responseList: Array<ListResponse<Student>> = yield all(callList);
   const rankingByCityList: Array<RankingByCity> = responseList.map((x, idx) => ({
     cityId: cityList[idx].code,
-    // cityName:
+    cityName: cityList[idx].name,
     rankingList: x.data,
   }));
   // Update state
