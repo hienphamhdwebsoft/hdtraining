@@ -1,8 +1,9 @@
 import { Box, Button, LinearProgress, makeStyles, Typography } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import React, { useEffect } from 'react';
+import studentApi from '../../../api/studentApi';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { ListParams } from '../../../models';
+import { ListParams, Student } from '../../../models';
 import { selectCityList, selectCityMap } from '../../city/citySlice';
 import StudentFilters from '../components/StudentFilters';
 import StudentTable from '../components/StudentTable';
@@ -68,6 +69,18 @@ export default function ListPage() {
         dispatch(studentActions.setFilter(newFilter));
     }
 
+    const handleRemoveStudent = async (student: Student) => {
+        try {
+            // Remove student API
+            await studentApi.remove(student.id || '');
+            // Trigger to re-fetch student list with current filter
+            const newFilter = { ...filter }
+            dispatch(studentActions.setFilter(newFilter));
+        } catch (error) {
+            console.log('Faile to remove student: ', error);
+        }
+    }
+
     return (
         <Box className={classes.root}>
             {/* Loading */}
@@ -83,7 +96,7 @@ export default function ListPage() {
                 <StudentFilters filter={filter} cityList={cityList} onChange={handleFilterChange} onSearchChange={handleSearchChange} />
             </Box>
             {/* Student table */}
-            <StudentTable studentList={studentList} cityMap={cityMap} />
+            <StudentTable studentList={studentList} cityMap={cityMap} onRemove={handleRemoveStudent} />
             {/* Pagination */}
             <Box className={classes.pagination}>
                 {/* totalRows,limit
