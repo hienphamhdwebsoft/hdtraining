@@ -5,8 +5,8 @@ import { ListParams, ListResponse, PaginationParams, Student } from '../../model
 export interface StudentState {
   loading: boolean;
   list: Student[];
-  filter?: ListParams;
-  pagination?: PaginationParams;
+  filter: ListParams;
+  pagination: PaginationParams;
 }
 
 const initialState: StudentState = {
@@ -42,6 +42,7 @@ const studentSlice = createSlice({
     setFilter(state, action: PayloadAction<ListParams>) {
       state.filter = action.payload;
     },
+    setFilterDebounce(state, action: PayloadAction<ListParams>) {},
   },
 });
 

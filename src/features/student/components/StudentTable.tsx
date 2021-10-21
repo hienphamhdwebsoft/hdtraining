@@ -1,4 +1,4 @@
-import { Button, makeStyles, Paper } from '@material-ui/core';
+import { Button, makeStyles, Paper, Box } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -6,7 +6,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import React from 'react';
-import { Student } from '../../../models/student';
+import { Student, City } from '../../../models';
+import { capitalizeString, setMarkColor } from '../../../utils';
+
 
 const useStyles = makeStyles(theme => ({
     table: {},
@@ -16,13 +18,16 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export interface StudentRankingListProps {
+export interface StudentTableProps {
     studentList: Student[],
+    cityMap: {
+        [key: string]: City,
+    },
     onEdit?: (student: Student) => void,
     onRemove?: (student: Student) => void,
 }
 
-export default function StudentTable({ studentList, onEdit, onRemove }: StudentRankingListProps) {
+export default function StudentTable({ studentList, cityMap, onEdit, onRemove }: StudentTableProps) {
     const classes = useStyles();
 
     return (
@@ -30,11 +35,11 @@ export default function StudentTable({ studentList, onEdit, onRemove }: StudentR
             <Table className={classes.table} size="small" aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell >ID</TableCell>
-                        <TableCell >Name</TableCell>
-                        <TableCell align='center'>Gender</TableCell>
-                        <TableCell align='center'>Mark</TableCell>
-                        <TableCell align='center'>City</TableCell>
+                        <TableCell>ID</TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Gender</TableCell>
+                        <TableCell>Mark</TableCell>
+                        <TableCell>City</TableCell>
                         <TableCell align='center'>Actions</TableCell>
                     </TableRow>
                 </TableHead>
@@ -42,14 +47,18 @@ export default function StudentTable({ studentList, onEdit, onRemove }: StudentR
                 <TableBody>
                     {studentList.map((student) => (
                         <TableRow key={student.id} >
-                            <TableCell >{student.id}</TableCell>
-                            <TableCell >{student.name}</TableCell>
-                            <TableCell align='center'>{student.gender}</TableCell>
-                            <TableCell align='center'>{student.mark}</TableCell>
-                            <TableCell align='center'>{student.city}</TableCell>
+                            <TableCell>{student.id}</TableCell>
+                            <TableCell>{student.name}</TableCell>
+                            <TableCell>{capitalizeString(student.gender)}</TableCell>
+                            <TableCell>
+                                <Box color={setMarkColor(student.mark)} fontWeight="bold">
+                                    {student.mark}
+                                </Box>
+                            </TableCell>
+                            <TableCell>{cityMap[student.city]?.name}</TableCell>
                             <TableCell align='center'>
-                                <Button className={classes.btnEdit} variant='outlined' color='primary' onClick={() => onEdit?.(student)} >Edit</Button>
-                                <Button variant='outlined' color='secondary' onClick={() => onRemove?.(student)} >Remove</Button>
+                                <Button size='small' className={classes.btnEdit} variant='outlined' color='primary' onClick={() => onEdit?.(student)} >Edit</Button>
+                                <Button size='small' variant='outlined' color='secondary' onClick={() => onRemove?.(student)} >Remove</Button>
                             </TableCell>
                         </TableRow>
                     ))}

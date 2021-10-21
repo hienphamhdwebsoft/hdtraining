@@ -10,7 +10,7 @@ function* handleLogin(payload: LoginPayload) {
     yield put(
       authActions.loginSuccess({
         id: 1,
-        name: 'Easy Frontend',
+        name: 'Hien Pham',
       })
     );
 

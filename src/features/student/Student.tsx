@@ -1,14 +1,21 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { useAppDispatch } from '../../app/hooks';
+import { cityActions } from '../city/citySlice';
 import AddEditStudent from './pages/AddEditStudent';
-import ListStudent from './pages/ListStudent';
+import ListPage from './pages/ListPage';
 
 export default function Student() {
     const match = useRouteMatch();
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(cityActions.fetchCityList())
+    }, [dispatch])
     return (
         <Switch>
             <Route path={match.path} exact>
-                <ListStudent />
+                <ListPage />
             </Route>
             <Route path={`${match.path}/add`} >
                 <AddEditStudent />
