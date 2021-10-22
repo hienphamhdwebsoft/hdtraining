@@ -5,10 +5,12 @@ import { Link, useParams } from 'react-router-dom';
 import studentApi from '../../../api/studentApi';
 import { Student } from '../../../models';
 import StudentForm from '../components/StudentForm';
+import { useHistory } from 'react-router-dom'
 
 
 
 export default function AddEditStudent() {
+    const history = useHistory();
     const { studentId } = useParams<{ studentId: string }>();
     const isEdit = Boolean(studentId); // Is edit when sudentId have data.
     const [student, setStudent] = useState<Student>();
@@ -27,6 +29,17 @@ export default function AddEditStudent() {
         })();
     }, [studentId]);
 
+    const handleStudentFormSubmit = async (formValues: Student) => {
+        // TODO: Handle submit here, call API  to add/update student
+        if (isEdit) {
+            await studentApi.update(formValues);
+        } else {
+            await studentApi.add(formValues);
+        }
+        // Redirect back to student list
+        history.push('/admin/student');
+    };
+
     const initialValues: Student = {
         name: '',
         age: '',
@@ -36,9 +49,7 @@ export default function AddEditStudent() {
         ...student,
     } as Student;
 
-    const handleStudentFormSubmit = (formValues: Student) => {
-        //  TODO: handle submit here, callAPI to add/update student 
-    };
+
 
     return (
         <Box>
