@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import studentApi from '../../../api/studentApi';
 import { Student } from '../../../models';
+import StudentForm from '../components/StudentForm';
 
 
 
@@ -26,7 +27,17 @@ export default function AddEditStudent() {
         })();
     }, [studentId]);
 
-    console.log('st', student)
+    const initialValues: Student = {
+        name: '',
+        age: '',
+        mark: '',
+        gender: 'male',
+        city: '',
+        ...student,
+    } as Student;
+
+    const handleStudentFormSubmit = (formValues: Student) => { };
+
     return (
         <Box>
             <Link to="/admin/student">
@@ -37,6 +48,11 @@ export default function AddEditStudent() {
             <Typography variant="h4">
                 {isEdit ? "Edit student" : " Add new student"}
             </Typography>
+            <Box mt={3}>
+                {(!isEdit || Boolean(student)) && (
+                    <StudentForm initialValues={initialValues} onSubmit={handleStudentFormSubmit} />
+                )}
+            </Box>
         </Box>
     );
 }
