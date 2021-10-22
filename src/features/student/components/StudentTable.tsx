@@ -83,8 +83,19 @@ export default function StudentTable({ studentList, cityMap, onEdit, onRemove }:
                                 </TableCell>
                                 <TableCell>{cityMap[student.city]?.name}</TableCell>
                                 <TableCell align='center'>
-                                    <Button size='small' className={classes.btnEdit} variant='outlined' color='primary'>Edit</Button>
-                                    <Button size='small' variant='outlined' color='secondary' onClick={() => handleRemoveClick(student)} >Remove</Button>
+                                    <Button
+                                        size='small'
+                                        className={classes.btnEdit}
+                                        variant='outlined'
+                                        color='primary'
+                                        onClick={() => onEdit?.(student)}
+                                    >Edit</Button>
+
+                                    <Button
+                                        size='small'
+                                        variant='outlined'
+                                        color='secondary'
+                                        onClick={() => handleRemoveClick(student)} >Remove</Button>
                                 </TableCell>
                             </TableRow>
                         ))}

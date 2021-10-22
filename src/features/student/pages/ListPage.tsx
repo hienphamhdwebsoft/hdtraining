@@ -1,14 +1,20 @@
 import { Box, Button, LinearProgress, makeStyles, Typography } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import React, { useEffect } from 'react';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import studentApi from '../../../api/studentApi';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { ListParams, Student } from '../../../models';
 import { selectCityList, selectCityMap } from '../../city/citySlice';
 import StudentFilters from '../components/StudentFilters';
 import StudentTable from '../components/StudentTable';
-import { selectStudenLoading, selectStudentFilter, selectStudentList, selectStudentPagination, studentActions } from '../studentSlice';
-
+import {
+    selectStudenLoading,
+    selectStudentFilter,
+    selectStudentList,
+    selectStudentPagination,
+    studentActions
+} from '../studentSlice';
 const useStyles = makeStyles((theme) => ({
     root: {
         position: 'relative',
@@ -39,6 +45,8 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function ListPage() {
+    const match = useRouteMatch(); // match = /admin/student
+    const history = useHistory();
     const studentList = useAppSelector(selectStudentList);
     const pagination = useAppSelector(selectStudentPagination);
     const filter = useAppSelector(selectStudentFilter);
@@ -81,22 +89,37 @@ export default function ListPage() {
         }
     }
 
+    const handleEditStudent = async (student: Student) => {
+        history.push(`${match.url}/${student.id}`);
+    };
+
     return (
         <Box className={classes.root}>
             {/* Loading */}
             {loading && <LinearProgress className={classes.loading} />}
             <Box className={classes.titleContainer}>
                 <Typography variant='h4'>Table Student</Typography>
-                <Button variant='contained' color='primary'>
-                    Add Student
-                </Button>
+                <Link to={`${match.url}/add`} style={{ textDecoration: 'none' }} >
+                    <Button variant='contained' color='primary'>
+                        Add Student
+                    </Button>
+                </Link>
             </Box>
             {/* Filter */}
             <Box mb={3}>
-                <StudentFilters filter={filter} cityList={cityList} onChange={handleFilterChange} onSearchChange={handleSearchChange} />
+                <StudentFilters
+                    filter={filter}
+                    cityList={cityList}
+                    onChange={handleFilterChange}
+                    onSearchChange={handleSearchChange} />
             </Box>
             {/* Student table */}
-            <StudentTable studentList={studentList} cityMap={cityMap} onRemove={handleRemoveStudent} />
+            <StudentTable
+                studentList={studentList}
+                cityMap={cityMap}
+                onEdit={handleEditStudent}
+                onRemove={handleRemoveStudent}
+            />
             {/* Pagination */}
             <Box className={classes.pagination}>
                 {/* totalRows,limit
