@@ -36,7 +36,9 @@ export default function AddEditStudent() {
         ...student,
     } as Student;
 
-    const handleStudentFormSubmit = (formValues: Student) => { };
+    const handleStudentFormSubmit = (formValues: Student) => {
+        //  TODO: handle submit here, callAPI to add/update student 
+    };
 
     return (
         <Box>
