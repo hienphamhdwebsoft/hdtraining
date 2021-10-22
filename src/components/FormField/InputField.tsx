@@ -1,4 +1,4 @@
-import { TextField, Button } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { InputHTMLAttributes } from 'hoist-non-react-statics/node_modules/@types/react';
 import * as React from 'react';
 import { Control, useController } from 'react-hook-form';
@@ -21,8 +21,10 @@ export function InputField({ name, control, label, ...inputProps }: InputFieldPr
     return (
         <TextField
             fullWidth
+            size="small"
             margin="normal"
             variant="outlined"
+            value={value}
             label={label}
             onChange={onChange}
             onBlur={onBlur}
